@@ -1,7 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-import public
+__all__ = ['update']
+
+
 import requests
+
 
 def getnames(path):
     names = []
@@ -11,6 +12,7 @@ def getnames(path):
             names.append(name)
     return names
 
+
 def get_latest_version(name):
     url = "https://pypi.org/pypi/%s/json" % name
     r = requests.get(url)
@@ -18,11 +20,11 @@ def get_latest_version(name):
     data = r.json()
     return data["info"]["version"]
 
-@public.add
+
 def update(path):
     """update pip requirements file with latest versions"""
     lines = []
     for name in getnames(path):
         version = get_latest_version(name)
-        lines.append('%s==%s' % (name,version))
-    open(path,"w").write("\n".join(lines))
+        lines.append('%s==%s' % (name, version))
+    open(path, "w").write("\n".join(lines))
